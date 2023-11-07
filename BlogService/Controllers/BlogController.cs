@@ -34,12 +34,30 @@ namespace BlogService.Controllers
 
             try
             {
+                if (string.IsNullOrEmpty(command.Title))
+                {
+                    return BadRequest("Title is required");
+                }
+
+                if (string.IsNullOrEmpty(command.Content))
+                {
+                    return BadRequest("Content is required");
+                }
+
+
+
                 int createdPostId = await _commandHandler.Process(command);
+
+                if (createdPostId <= 0)
+                {
+                    return StatusCode(500, "Error while creating blog");
+                }
+
                 return CreatedAtAction("GetBlog", new { id = createdPostId }, command);
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return StatusCode(500, $"Error while creating blog: {ex.Message}");
 
             }
         }
@@ -47,18 +65,34 @@ namespace BlogService.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBlog(int id)
+        public async Task<IActionResult> GetBlog(string id)
         {
-            var query = new GetBlogQuery { Id = id };
-            var blogData = await _queryHandler.Process(query);
-
-            if (blogData == null)
+            
+            int number_id;
+            try
             {
-                return NotFound();
+                bool number_found = int.TryParse(id, out number_id);
+
+                if (!number_found)
+                {
+                    return BadRequest("Blog id should be a valid number");
+                }
+
+                var query = new GetBlogQuery { Id = number_id };
+                var blogData = await _queryHandler.Process(query);
+
+                if (blogData == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(blogData);
             }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error while getting blog: {ex.Message}");
 
-            return Ok(blogData);
-
+            }
 
         }
 
