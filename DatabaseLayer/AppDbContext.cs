@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using DatabaseLayer.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace DatabaseLayer
 {
@@ -27,28 +28,38 @@ namespace DatabaseLayer
         public DbSet<Comment> Comments { get; set; }
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=BlogDB;Trusted_Connection=True;");
 
-                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+        //From package manger console
 
-            }
-        }
+        // To Add Migration
+        // Add-Migration [MigraionName]
+
+
+        // To Update Database
+        //Update-Database
+
+
+        // To revert to specific Migration 
+        // Update-Database -Context MigrationName
+
+
+
+        // To run migrations and update database
+        // Update-Database
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=BlogDB;Trusted_Connection=True;");
+
+        //        optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+
+        //    }
+        //}
 
     }
 
 
-    //public class AppDbContextFactory : Microsoft.EntityFrameworkCore.Design.IDesignTimeDbContextFactory<AppDbContext>
-    //{
-    //    public AppDbContext CreateDbContext(string[] args)
-    //    {
-    //        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-    //        optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=BlogDB;Trusted_Connection=True;");
 
-    //        return new AppDbContext(optionsBuilder.Options);
-    //    }
-    //}
 }

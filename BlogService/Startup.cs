@@ -1,7 +1,9 @@
+using DatabaseLayer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,7 +28,17 @@ namespace BlogService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            IConfiguration Configuration = new ConfigurationBuilder()
+                .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                // getting connection string from config file
+                //options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                var connectionString = Configuration.GetConnectionString("DefaultConnection");
+                options.UseSqlServer(connectionString);
+            });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

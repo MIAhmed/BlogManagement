@@ -61,18 +61,5 @@ namespace DatabaseLayer
         
 
 
-        //From package manger console
-        
-        // To Add Migration
-        // Add-Migration [MigraionName]
-
-
-        // To Update Database
-        //Update-Database
-
-
-        // To revert to specific Migration 
-        // Update-Database -Context MigrationName
-
     }
 }
