@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService", "Au
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIGateway", "APIGateway\APIGateway.csproj", "{1DDDBC23-91C6-4915-891C-FD0046503BD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseLayer", "DatabaseLayer\DatabaseLayer.csproj", "{D63A569A-78F0-4833-AF9B-319657CEE614}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseLayer", "DatabaseLayer\DatabaseLayer.csproj", "{D63A569A-78F0-4833-AF9B-319657CEE614}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CachingLayer", "CachingLayer\CachingLayer.csproj", "{50B12739-B557-4218-BF12-99848703E94C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D63A569A-78F0-4833-AF9B-319657CEE614}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D63A569A-78F0-4833-AF9B-319657CEE614}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D63A569A-78F0-4833-AF9B-319657CEE614}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50B12739-B557-4218-BF12-99848703E94C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50B12739-B557-4218-BF12-99848703E94C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50B12739-B557-4218-BF12-99848703E94C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50B12739-B557-4218-BF12-99848703E94C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
