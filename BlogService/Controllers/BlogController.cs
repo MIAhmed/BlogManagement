@@ -1,4 +1,8 @@
-﻿using BlogService.Models;
+﻿using BlogService.Handlers.Commands;
+using BlogService.Handlers.Queries;
+using BlogService.Models;
+using BlogService.Models.Commands;
+using BlogService.Models.Queries;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,28 +12,54 @@ using System.Threading.Tasks;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BlogService.Controllers
-{
+{   
     [Route("api/[controller]")]
     [ApiController]
     public class BlogController : ControllerBase
     {
+
+        private readonly BlogCommandHandler _commandHandler;
+        private readonly BlogQueryHandler  _queryHandler;
+
+        public BlogController(BlogCommandHandler commandHandler, BlogQueryHandler queryHandler) {
+            _commandHandler = commandHandler;
+            _queryHandler = queryHandler;
+        }
+
+
+
         [HttpPost]
-        public async Task<IActionResult> CreateBlogPost([FromBody] BlogPostModel blog_post)
+        public async Task<IActionResult> CreateBlog([FromBody] CreateBlogCommand command)
         {
 
+            try
+            {
+                int createdPostId = await _commandHandler.Process(command);
+                return CreatedAtAction("GetBlog", new { id = createdPostId }, command);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
 
-            //return BadRequest();
-
-            return CreatedAtAction("Blog Created", blog_post.Title);
-
+            }
         }
 
 
 
         [HttpGet("{id}")]
-        public string[] GetBlog(string id)
+        public async Task<IActionResult> GetBlog(int id)
         {
-            return new string [] { id};
+            var query = new GetBlogQuery { Id = id };
+            var blogData = await _queryHandler.Process(query);
+
+            if (blogData == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(blogData);
+
+
         }
 
 

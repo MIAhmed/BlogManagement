@@ -1,3 +1,5 @@
+using BlogService.Handlers.Commands;
+using BlogService.Handlers.Queries;
 using DatabaseLayer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,10 +37,17 @@ namespace BlogService
             services.AddDbContext<AppDbContext>(options =>
             {
                 // getting connection string from config file
-                //options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
                 var connectionString = Configuration.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
             });
+
+            // Register command processor for CQRS pattern
+            services.AddTransient<BlogCommandHandler>();
+
+            // Register query processor for CQRS pattern
+            services.AddTransient<BlogQueryHandler>();
+
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
