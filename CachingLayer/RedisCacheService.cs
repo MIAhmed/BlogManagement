@@ -26,8 +26,8 @@ namespace CachingLayer
                 var cachedData = await _cache.StringGetAsync(key);
                 if (cachedData.IsNull)
                 {
-                    throw new KeyNotFoundException();
-                    //return default(T);
+                    //throw new KeyNotFoundException();
+                    return default(T);
                 }
                 return JsonSerializer.Deserialize<T>(cachedData);
             }
