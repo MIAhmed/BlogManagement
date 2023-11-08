@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  blog-service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"  # Map host port 8080 to container port 80
+    depends_on:
+      - redis
+      - sql-server
+
+  redis:
+    image: "redis:latest"
+  sql-server:
+    image: "mcr.microsoft.com/mssql/server:2017-latest"
+    environment:
+      SA_PASSWORD: "Pass@123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"

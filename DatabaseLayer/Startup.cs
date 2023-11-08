@@ -33,7 +33,7 @@ namespace DatabaseLayer
             //    //.SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
             //    .AddJsonFile("appsettings.json")
             //    .Build();
-            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("SQLConnection"));
 
             //services.AddSingleton<IConfiguration>(configuration);
 
