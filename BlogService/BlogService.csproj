@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\APIGateway\APIGateway.csproj" />
     <ProjectReference Include="..\AuthenticationLayer\AuthenticationLayer.csproj" />
     <ProjectReference Include="..\CachingLayer\CachingLayer.csproj" />
     <ProjectReference Include="..\DatabaseLayer\DatabaseLayer.csproj" />

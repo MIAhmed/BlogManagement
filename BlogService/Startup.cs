@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-
+using APIGateway;
 namespace BlogService
 {
     public class Startup
@@ -40,6 +40,10 @@ namespace BlogService
                 .SetBasePath(System.IO.Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
+
+
+            services.AddMemoryCache();
+
 
             // getting secret key from the config that will be passed to the authentication layer for generating and validating JWT tokens 
             var authService = new AuthenticationLayer.AuthService(Configuration.GetValue<string>("AuthSecretKey"));
@@ -122,6 +126,9 @@ namespace BlogService
                 // Enable automatic migration on deployment
                 dbContext.Database.Migrate();
             }
+
+            // To enable Rate limiting using API gateway
+            app.UseRateLimiting();
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
