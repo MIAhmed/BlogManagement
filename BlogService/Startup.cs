@@ -1,7 +1,9 @@
+using AuthenticationLayer;
 using BlogService.Handlers.Commands;
 using BlogService.Handlers.Queries;
 using CachingLayer;
 using DatabaseLayer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -39,18 +41,45 @@ namespace BlogService
                 .AddJsonFile("appsettings.json")
                 .Build();
 
+            // getting secret key from the config that will be passed to the authentication layer for generating and validating JWT tokens 
+            var authService = new AuthenticationLayer.AuthService(Configuration.GetValue<string>("AuthSecretKey"));
+            services.AddSingleton(authService);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+           .AddJwtBearer(options =>
+           {
+               options.TokenValidationParameters = authService.GetTokenValidationParameters();
+           });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtAuthenticationDefaults.AuthenticationScheme;
+            })
+             .AddScheme<JwtAuthenticationOptions, JwtAuthenticationHandler>(JwtAuthenticationDefaults.AuthenticationScheme, options => { });
+
+            services.AddAuthorization();
+
+
+
+            services.AddAuthorization();
+            // Registering authentication layer to be able to use with the controller
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(options =>
+            //    {
+            //        // Applying the token validation rules defined in authentication layer
+            //        options.TokenValidationParameters = authService.GetTokenValidationParameters();
+            //    });
 
             services.AddDbContext<AppDbContext>(options =>
             {
                 string connectionString = "";
-                //if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 if(_env.IsDevelopment())
                 {
-                    // getting connection string from config file
+                    // getting connection string from config file for the localDB
                     connectionString = Configuration.GetConnectionString("SQLConnectionDev");
                 }
                 else
                 {
+                    // getting connection string from config file for the Docker env
                     connectionString = Configuration.GetConnectionString("SQLConnectionDocker");
                 }
                 options.UseSqlServer(connectionString);
@@ -80,7 +109,6 @@ namespace BlogService
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        //public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         public void Configure(IApplicationBuilder app, AppDbContext dbContext)
         {
             if (_env.IsDevelopment())
@@ -95,6 +123,7 @@ namespace BlogService
                 dbContext.Database.Migrate();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -105,6 +134,9 @@ namespace BlogService
             {
                 endpoints.MapControllers();
             });
+
+            //app.UseAuthentication();
+            //app.UseAuthorization();
         }
     }
 }

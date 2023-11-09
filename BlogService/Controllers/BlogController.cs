@@ -1,9 +1,11 @@
-﻿using BlogService.Handlers.Commands;
+﻿using AuthenticationLayer;
+using BlogService.Handlers.Commands;
 using BlogService.Handlers.Queries;
 using BlogService.Models;
 using BlogService.Models.Commands;
 using BlogService.Models.Queries;
 using CachingLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,8 +15,9 @@ using System.Threading.Tasks;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BlogService.Controllers
-{   
-    [Route("api/[controller]")]
+{
+    [Authorize] // will cause all the APIs in this class to have the valid tokens
+    [Route("api/posts")]
     [ApiController]
     public class BlogController : ControllerBase
     {
@@ -22,23 +25,30 @@ namespace BlogService.Controllers
         private readonly BlogCommandHandler _commandHandler;
         private readonly BlogQueryHandler  _queryHandler;
         private readonly RedisCacheService _cacheService;
-        private static string _cachePrefix = "Blog_";
+        private readonly AuthService _authService;
+        private static string _cachePrefix = "Posts_"; // prefix that will be used in all the Blog posts keys along with the posts ids
         private static readonly TimeSpan _cacheExpirationTimeMinutes = TimeSpan.FromMinutes(15);
 
-        public BlogController(BlogCommandHandler commandHandler, BlogQueryHandler queryHandler, RedisCacheService cacheService) {
+        public BlogController(BlogCommandHandler commandHandler, BlogQueryHandler queryHandler, RedisCacheService cacheService, AuthService authService) {
             _commandHandler = commandHandler;
             _queryHandler = queryHandler;
             _cacheService = cacheService;
+            _authService = authService;
         }
-
-
 
         [HttpPost]
         public async Task<IActionResult> CreateBlog([FromBody] CreateBlogCommand command)
         {
-
             try
             {
+                // 
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized("Invalid or expired token");
+                }
+
+
                 if (string.IsNullOrEmpty(command.Title))
                 {
                     return BadRequest("Title is required");
@@ -76,6 +86,13 @@ namespace BlogService.Controllers
             int number_id;
             try
             {
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized("Invalid or expired token");
+                }
+
+
                 bool number_found = int.TryParse(id, out number_id);
 
                 // validation of the provided id
@@ -86,7 +103,7 @@ namespace BlogService.Controllers
 
                 // creating key for the cache
                 var cacheKey = $"{_cachePrefix}{id}";
-
+                /*
                 // getting data from cache based on the formated key that contains id of the blog
                 var cachedData = await _cacheService.GetAsync<DatabaseLayer.Models.BlogPost>(cacheKey);
 
@@ -95,7 +112,7 @@ namespace BlogService.Controllers
                 {
                     return Ok(cachedData);
                 }
-
+                */
                 // Item not found in the cache so now getting it from the SQL Server
                 var query = new GetBlogQuery { Id = number_id };
                 var blogData = await _queryHandler.Process(query);
@@ -105,10 +122,10 @@ namespace BlogService.Controllers
                     // Item not found in the database
                     return NotFound();
                 }
-
+                /*
                 //Item found in datbase now saving it to the cache
                 await _cacheService.SetAsync<DatabaseLayer.Models.BlogPost>(cacheKey, blogData, _cacheExpirationTimeMinutes);
-
+                */
 
                 return Ok(blogData);
             }
@@ -119,9 +136,6 @@ namespace BlogService.Controllers
             }
 
         }
-
-
-
 
     }
 }
