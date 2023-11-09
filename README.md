@@ -56,9 +56,37 @@ Once doker is running, directory of repo and then run the following commands one
 
 
 ## APIs Authentication 
-Before be able to call any API need to get the authentication token using the login API via http://localhost:8080/api/login by posting keys and values
+Before be able to call any API need to get the authentication token using the login API.
+
+Request Method: Post
+
+URL: http://localhost:8080/api/login
+
+Data: 
 {
  "userName": "demo",
  "password": "demo"
 }
+
 ![Login API Sample](./resources/login_sample.png)
+
+Now need to use the token returned by the login API to call the next APIs
+
+## Available APIs
+### Getting a Blog Post and it's Comments
+This API can be used to get the blog and comments by passing the blog id using the below 
+
+Request Method: Get
+
+URL: http://localhost:8080/api/posts/[Blog_post_id]
+
+### Create Blog Post
+This API can be used to create a Blog Post 
+
+Request Method: Post
+http://localhost:8080/api/posts
+
+Data: {
+    "Title": "Title goes here",
+    "Content": "Content text goes here"
+}
