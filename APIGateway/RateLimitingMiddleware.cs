@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Memory;//TODO: Replace it with Redis cache
 using System;
 using System.Threading.Tasks;
 
@@ -9,7 +9,7 @@ namespace APIGateway
     public class RateLimitingMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IMemoryCache _cache;
+        private readonly IMemoryCache _cache; //TODO: Repalce it with Redis cache
         private readonly int _requestRateLimit = 100;
 
         public RateLimitingMiddleware(RequestDelegate next, IMemoryCache cache)

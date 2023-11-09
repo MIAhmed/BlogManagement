@@ -48,8 +48,16 @@ Contains following components
 - Token-based authentication with JWT is a widely used and secure method for authenticating clients.
 - Implementing the CQRS pattern optimizes performance and scalability by separating command (write) and query (read) operations within the Blog Service.
 
-## Getting Started
-This project is setup to run in the docker envoinment.
-Oncce doker is running, run following commands one after another in the terminal.
+## Deployment
+This solutions is designed to run in the docker envoinment.
+Once doker is running, directory of repo and then run the following commands one after another in the terminal.
 - docker-compose build
 - docker-compose up
+
+
+## APIs Authentication 
+Before be able to call any API need to get the authentication token using the login API via http://localhost:8080/api/login by posting some specific user credentials
+{
+ "userName": "demo",
+ "password": "demo"
+}
