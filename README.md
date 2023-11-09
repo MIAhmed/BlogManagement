@@ -56,8 +56,9 @@ Once doker is running, directory of repo and then run the following commands one
 
 
 ## APIs Authentication 
-Before be able to call any API need to get the authentication token using the login API via http://localhost:8080/api/login by posting some specific user credentials
+Before be able to call any API need to get the authentication token using the login API via http://localhost:8080/api/login by posting keys and values
 {
  "userName": "demo",
  "password": "demo"
 }
+![Login API Sample](./resources/login_sample.png)
