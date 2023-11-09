@@ -46,7 +46,7 @@ namespace BlogService
 
 
             // getting secret key from the config that will be passed to the authentication layer for generating and validating JWT tokens 
-            var authService = new AuthenticationLayer.AuthService(Configuration.GetValue<string>("AuthSecretKey"));
+            var authService = new AuthenticationLayer.AuthService(Configuration.GetValue<string>("AuthSecretKey") , Configuration.GetValue<int>("JwtTokenExpiryInMinutes"));
             services.AddSingleton(authService);
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
            .AddJwtBearer(options =>

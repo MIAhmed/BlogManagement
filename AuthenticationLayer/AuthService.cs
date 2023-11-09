@@ -13,10 +13,12 @@ namespace AuthenticationLayer
     public class AuthService
     {
         private readonly string _secretKey;
+        private readonly int _jwtTokenExpiryInMinutes;
 
-        public AuthService(string secretKey)
+        public AuthService(string secretKey ,int jwtTokenExpiryInMinutes)
         {
             _secretKey = secretKey;
+            _jwtTokenExpiryInMinutes = jwtTokenExpiryInMinutes;
         }
 
         // this is central place configruation for the authenticaition of the token based on the defined rules that can be used within and outside this library
@@ -48,7 +50,7 @@ namespace AuthenticationLayer
                 {
                     new Claim(ClaimTypes.NameIdentifier, userData)
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(2),
+                Expires = DateTime.UtcNow.AddMinutes(_jwtTokenExpiryInMinutes), // Token expiry time 
                 SigningCredentials = signingCredentials
             };
 
