@@ -19,8 +19,6 @@ namespace AuthenticationLayer
             _secretKey = secretKey;
         }
 
-
-
         // this is central place configruation for the authenticaition of the token based on the defined rules that can be used within and outside this library
         public TokenValidationParameters GetTokenValidationParameters()
         {
@@ -56,8 +54,6 @@ namespace AuthenticationLayer
 
             var token = handler.CreateToken(tokenDesc);
             return handler.WriteToken(token);
-
-            
         }
 
         // This function will be called to validate the tokens and returns the claims if the token is validated otherwise null.
@@ -76,9 +72,6 @@ namespace AuthenticationLayer
                 // token validation failed
                 return null;
             }
-
         }
-
-
     }
 }

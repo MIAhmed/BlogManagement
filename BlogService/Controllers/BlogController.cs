@@ -41,26 +41,27 @@ namespace BlogService.Controllers
         {
             try
             {
-                // 
+                // can use this user id to set blog post created by the user
                 var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userId))
                 {
                     return Unauthorized("Invalid or expired token");
                 }
 
-
+                // validating if the title was provided
                 if (string.IsNullOrEmpty(command.Title))
                 {
                     return BadRequest("Title is required");
                 }
 
+                // validating if the content was provided
                 if (string.IsNullOrEmpty(command.Content))
                 {
                     return BadRequest("Content is required");
                 }
 
 
-
+                //checking if the created record has a valid id, that indicates record added
                 int createdPostId = await _commandHandler.Process(command);
 
                 if (createdPostId <= 0)
@@ -68,6 +69,7 @@ namespace BlogService.Controllers
                     return StatusCode(500, "Error while creating blog");
                 }
 
+                // retuning the response that will point to the created record using the get blog API
                 return CreatedAtAction("GetBlog", new { id = createdPostId }, command);
             }
             catch (Exception ex)
@@ -86,6 +88,7 @@ namespace BlogService.Controllers
             int number_id;
             try
             {
+                // can use this user id to set the stats if required like blog accessed by 
                 var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userId))
                 {
@@ -103,7 +106,7 @@ namespace BlogService.Controllers
 
                 // creating key for the cache
                 var cacheKey = $"{_cachePrefix}{id}";
-                /*
+                
                 // getting data from cache based on the formated key that contains id of the blog
                 var cachedData = await _cacheService.GetAsync<DatabaseLayer.Models.BlogPost>(cacheKey);
 
@@ -112,7 +115,7 @@ namespace BlogService.Controllers
                 {
                     return Ok(cachedData);
                 }
-                */
+                
                 // Item not found in the cache so now getting it from the SQL Server
                 var query = new GetBlogQuery { Id = number_id };
                 var blogData = await _queryHandler.Process(query);
@@ -122,10 +125,10 @@ namespace BlogService.Controllers
                     // Item not found in the database
                     return NotFound();
                 }
-                /*
+                
                 //Item found in datbase now saving it to the cache
                 await _cacheService.SetAsync<DatabaseLayer.Models.BlogPost>(cacheKey, blogData, _cacheExpirationTimeMinutes);
-                */
+                
 
                 return Ok(blogData);
             }

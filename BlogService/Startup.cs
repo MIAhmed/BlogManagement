@@ -62,17 +62,6 @@ namespace BlogService
 
             services.AddAuthorization();
 
-
-
-            services.AddAuthorization();
-            // Registering authentication layer to be able to use with the controller
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(options =>
-            //    {
-            //        // Applying the token validation rules defined in authentication layer
-            //        options.TokenValidationParameters = authService.GetTokenValidationParameters();
-            //    });
-
             services.AddDbContext<AppDbContext>(options =>
             {
                 string connectionString = "";
@@ -131,6 +120,7 @@ namespace BlogService
             app.UseRateLimiting();
 
             app.UseAuthentication();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -142,8 +132,6 @@ namespace BlogService
                 endpoints.MapControllers();
             });
 
-            //app.UseAuthentication();
-            //app.UseAuthorization();
         }
     }
 }
