@@ -16,12 +16,12 @@ This project outlines the conceptualization and high-level design of a microserv
 Contains following components 
 - **API Layer:** Exposes RESTful endpoints for managing blog posts and comments.
 - **Business Logic:** Handles the core functionality of creating, updating, and retrieving blog posts and comments.
-- **Data Access:** It utilize the database using Databse Layer by utlizing CQRS pattern
-- **Caching Layer :** Uses Caching Layer to cache frequently requested data like blog posts and comments to enhance performance.
+- **Data Access:** It utilize the database using Database Layer by utlizing CQRS pattern
+- **Caching:** Uses Caching Layer to cache frequently requested data like blog posts and comments to enhance performance.
 
 #### Authentication Layer:
 
-- Responsible for token-based authentication by generates and validates tokens for basic authentication
+- Responsible for JWT token-based authentication by generating and validating tokens for basic authentication
 
 #### API Gateway:
 
