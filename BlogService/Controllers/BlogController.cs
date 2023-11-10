@@ -24,12 +24,12 @@ namespace BlogService.Controllers
 
         private readonly BlogCommandHandler _commandHandler;
         private readonly BlogQueryHandler  _queryHandler;
-        private readonly RedisCacheService _cacheService;
+        private readonly ICacheService _cacheService;
         private readonly AuthService _authService;
         private static string _cachePrefix = "Posts_"; // prefix that will be used in all the Blog posts keys along with the posts ids
         private static readonly TimeSpan _cacheExpirationTimeMinutes = TimeSpan.FromMinutes(15);
 
-        public BlogController(BlogCommandHandler commandHandler, BlogQueryHandler queryHandler, RedisCacheService cacheService, AuthService authService) {
+        public BlogController(BlogCommandHandler commandHandler, BlogQueryHandler queryHandler, ICacheService cacheService, AuthService authService) {
             _commandHandler = commandHandler;
             _queryHandler = queryHandler;
             _cacheService = cacheService;
@@ -42,7 +42,7 @@ namespace BlogService.Controllers
             try
             {
                 // can use this user id to set blog post created by the user
-                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                var userId = User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userId))
                 {
                     return Unauthorized("Invalid or expired token");
@@ -89,7 +89,7 @@ namespace BlogService.Controllers
             try
             {
                 // can use this user id to set the stats if required like blog accessed by 
-                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                var userId = User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userId))
                 {
                     return Unauthorized("Invalid or expired token");

@@ -43,21 +43,6 @@ namespace DatabaseLayer
         // Update-Database -Context MigrationName
 
 
-
-        // To run migrations and update database
-        // Update-Database
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //    {
-        //        optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=BlogDB;Trusted_Connection=True;");
-
-        //        optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-
-        //    }
-        //}
-
     }
 
 

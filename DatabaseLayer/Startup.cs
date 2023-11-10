@@ -28,34 +28,8 @@ namespace DatabaseLayer
                 .SetBasePath(System.IO.Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
-            //var configuration = new ConfigurationBuilder()
-            //    .SetBasePath(System.IO.Directory.GetCurrentDirectory())
-            //    //.SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            //    .AddJsonFile("appsettings.json")
-            //    .Build();
-            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("SQLConnection"));
-
-            //services.AddSingleton<IConfiguration>(configuration);
-
-                
-            //services.AddDbContext<AppDbContext>(options =>
-            //{   
-            //    // getting connection string from config file
-            //    //options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            //    var connectionString = configuration.GetConnectionString("DefaultConnection");
-            //    options.UseSqlServer(connectionString);
-            //});
 
 
-
-
-            //builder.Services.AddDbContext<DataContext>(options =>
-            //{
-            //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            //});
-            //builder.Services.AddDbContext<CommonProjectContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-            //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddEntityFrameworkStores<CommonProjectContext>();
         }
 
         

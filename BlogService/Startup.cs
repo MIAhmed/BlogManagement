@@ -86,7 +86,7 @@ namespace BlogService
             services.AddTransient<BlogQueryHandler>();
 
             //Register Redis for 
-            services.AddSingleton<RedisCacheService>(provider => 
+            services.AddSingleton<ICacheService>(provider => 
                 new RedisCacheService(Configuration.GetConnectionString("RedisConnection")));
 
             services.AddStackExchangeRedisCache(options =>

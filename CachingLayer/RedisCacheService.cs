@@ -8,7 +8,7 @@ using StackExchange.Redis;
 
 namespace CachingLayer
 {
-    public class RedisCacheService
+    public class RedisCacheService : ICacheService
     {
         private readonly IConnectionMultiplexer _connectionMultiplexer;
         private readonly IDatabase _cache;
