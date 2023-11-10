@@ -8,7 +8,7 @@ This project outlines the conceptualization and high-level design of a microserv
 
 ### Architectural Diagram
 
-![Microservices Architecture Diagram](./Architecture.png)
+![Microservices Architecture Diagram](./resources/architecture.png)
 
 ### High-Level Overview
 
